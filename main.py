@@ -2,8 +2,8 @@ import os
 import subprocess
 import sys
 from tkinter import messagebox
-from Instalacao.Instalar import Instalar  # Certifique-se de que o caminho para o módulo Instalar está correto
-from Game.Log.infor import Log  # Certifique-se de que o caminho para o módulo Log está correto
+from Instalacao.Instalar import Instalar  
+from Game.Log.infor import Log  
 
 def main():
     subprocess.call(["python", "Game/Game.py"])

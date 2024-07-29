@@ -24,6 +24,7 @@ class Instalar:
                     file.write("Instalado")
             except Exception as e:
                 messagebox.showerror("Erro", f"Erro ao instalar o requisito {Requisito}: {e}")
+                Log(2).salvar()
                 self.Instalacao = False
                 return self.Instalacao
         self.Instalacao = True
