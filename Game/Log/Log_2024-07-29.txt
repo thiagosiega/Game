@@ -1,0 +1,6 @@
+
+------------------------------------------------------------------------------------------------------------------------
+Erro: Erro ao Identificar janela.
+Descrição: Esse erro ocorre quando tem multiplos monitores/sem monitores e a janela não foi identificada corretamente. Contate o DEV para mais informações.
+Data: 2024-07-29 20:24:05
+------------------------------------------------------------------------------------------------------------------------

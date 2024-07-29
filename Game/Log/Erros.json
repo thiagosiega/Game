@@ -1,0 +1,46 @@
+{
+    "Codigos de erros": [
+        {
+            "ID": 1,
+            "Infor": {
+                "Erro": "Erro de instalação.",
+                "Descrição": "Erro ao instalar dependências do jogo."
+            }
+        },
+        {
+            "ID": 2,
+            "Infor": {
+                "Erro": "Erro de instalação.",
+                "Descrição": "Pacote ou componente corrompido ou não encontrado."
+            }
+        },
+        {
+            "ID": 3,
+            "Infor": {
+                "Erro": "Erro de desinstalação.",
+                "Descrição": "Pacote ou componente não encontrado ou inexistente."
+            }
+        },
+        {
+            "ID": 4,
+            "Infor": {
+                "Erro": "Erro de iniciação indevida.",
+                "Descrição": "Provavelmente um arquivo foi chamado na ordem errada. Inicie o arquivo 'main.py' para corrigir."
+            }
+        },
+        {
+            "ID": 5,
+            "Infor": {
+                "Erro": "Erro ao definir a prioridade da janela.",
+                "Descrição": "O erro quer dizer que a janela não foi puxada para frente como esperado. Contate o DEV para mais informações. Isso não impede a execução."
+            }
+        },
+        {
+            "ID": 6,
+            "Infor": {
+                "Erro": "Erro ao Identificar janela.",
+                "Descrição": "Esse erro ocorre quando tem multiplos monitores/sem monitores e a janela não foi identificada corretamente. Contate o DEV para mais informações."
+            }
+        }
+    ]
+}
