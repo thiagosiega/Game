@@ -1,0 +1,6 @@
+
+------------------------------------------------------------------------------------------------------------------------
+Erro: Erro ao definir a prioridade da janela.
+Descrição: O erro quer dizer que a janela não foi puxada para frente como esperado. Contate o DEV para mais informações. Isso não impede a execução.
+Data: 2024-07-30 14:29:02
+------------------------------------------------------------------------------------------------------------------------

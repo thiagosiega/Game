@@ -1,5 +1,6 @@
 import pygame
 
+from GUI.Img import Imgs
 class Player:
     def __init__(self, x, y):
         self.x = x
@@ -45,6 +46,7 @@ class Player:
             
             # Verifica se o número de projéteis é menor que o máximo permitido
             if len(self.projetis) < self.tiros:
+                
                 # Só criar um projétil se houver pelo menos um inimigo no alcance
                 inimigos_no_alcance = [inimigo for inimigo in inimigos if self.x - self.renger < inimigo.x < self.x + self.renger and self.y - self.renger < inimigo.y < self.y + self.renger]
                 
@@ -82,8 +84,6 @@ class Player:
             # Atualiza o timestamp do último tiro
             self.ultimo_tiro = tempo_atual
 
-
-
     def atualizar_projetis(self, inimigos, screen):
         projeteis_a_remover = []
         inimigos_a_remover = []
@@ -118,8 +118,6 @@ class Player:
         # Retorna se algum inimigo foi removido
         return bool(inimigos_a_remover)
 
-
-    
     def renge(self, screen):
         # Círculo vermelho em volta do centro do player
         pygame.draw.circle(screen, (255, 0, 0), (self.x + self.largura // 2, self.y + self.altura // 2), self.renger, 2)

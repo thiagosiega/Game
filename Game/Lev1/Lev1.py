@@ -3,8 +3,7 @@ import os
 import json
 import sys
 import random
-
-from tkinter import messagebox
+import subprocess
 
 # Adicione o caminho antes das importações
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -13,6 +12,7 @@ from Player.Player import Player
 from Inimigos.Inimigo import Inimigo
 from GUI.Foco_janela import FocoJanela
 from GUI.Label import Label
+from GUI.Img import Imgs
 
 pygame.init()
 
@@ -25,7 +25,6 @@ def carregar_configuracoes():
     if os.path.exists(file):
         with open(file, "r") as f:
             configuracoes = json.load(f)
-            print(configuracoes)
     else:
         configuracoes = {
             "resolucao": [800, 600],
@@ -48,7 +47,9 @@ def janela():
     else:
         resolucao = configuracoes["resolucao"]
         tela = pygame.display.set_mode(resolucao)
+
     
+
     pygame.display.set_caption("Lev1")
     return tela, configuracoes["FPS"]
 
@@ -94,7 +95,9 @@ if __name__ == "__main__":
     player = Player(50, 50)
     pontos = 1
     pontos_inimigo = 0
-    inimigo_lista = criar_inimigos(pontos, screen)  # Inicialmente cria 1 inimigo
+    inimigo_lista = criar_inimigos(pontos, screen) 
+    img = "Game/Img/Fundo_Lev1.jpg"
+    fundo = Imgs(img, screen.get_width(), screen.get_height(), 0, 0)
 
     while running:
         for event in pygame.event.get():
@@ -103,12 +106,14 @@ if __name__ == "__main__":
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
+        
 
         player.mover(5, 5)  # Movimentação do jogador
         player.limite_tela(screen.get_size())  # Limitar o movimento do jogador
 
         player.tiro(inimigo_lista, screen)  # Verifica e cria projéteis
         screen.fill((0, 0, 0))
+        fundo.desenhar_imagem(screen)
         
         # Player
         player.desenhar(screen)

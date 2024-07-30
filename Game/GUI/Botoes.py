@@ -2,9 +2,7 @@ import pygame
 import os
 import sys
 import subprocess
-
 from tkinter import messagebox
-from pywinauto import Application
 from Log.infor import Log
 from GUI.Foco_janela import FocoJanela
 
@@ -35,16 +33,34 @@ class Botoes:
         if texto == "Sair":
             # Pergunta se deseja sair
             if messagebox.askyesno("Sair", "Deseja sair?"):
-                messagebox.showinfo("!", "Você irá se arrepender!")
+                messagebox.showinfo("Saída", "Você irá se arrepender!")
                 pygame.quit()
                 sys.exit()
             else:
-                messagebox.showinfo("!", "Acho bom!")
+                messagebox.showinfo("Cancelado", "Acho bom!")
                 # Foca a janela do pygame
-                focojanela = FocoJanela("Game")
-                focojanela.foco_janela()
-        if texto == "Iniciar":
-            subprocess.Popen(["python", "Game/Lev1/Lev1.py"])
-            sys.exit()
-            
+                self.focar_janela()
+
+        elif texto == "Iniciar":
+            while True:
+                try:
+                    # Inicia o jogo e aguarda a conclusão
+                    subprocess.run(["python", "Game/Lev1/Lev1.py"], check=True)
+                    break
+                except Exception as e:
+                    print(f"Erro ao iniciar o jogo: {e}")
+                    messagebox.showerror("Erro", f"Erro ao iniciar o jogo: {e}")
+        
+        elif texto == "Configurações":
+            # Placeholder para configurações
+            pass
+
+    def focar_janela(self):
+        """Método para focar a janela do Pygame usando pywinauto"""
+        try:
+            focojanela = FocoJanela("Game")
+            focojanela.foco_janela()
+        except Exception as e:
+            Log(5).salvar()
+            print(f"Erro ao focar a janela: {e}")
 
