@@ -2,12 +2,9 @@ import pygame
 import os
 import json
 import sys
-import subprocess
 import random
 
-
 from tkinter import messagebox
-
 
 # Adicione o caminho antes das importações
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -55,16 +52,19 @@ def janela():
     pygame.display.set_caption("Lev1")
     return tela, configuracoes["FPS"]
 
-player = Player(50, 50)
-inimigo = Inimigo(200, 200)
-pontos = 0
-pontos_inimigo = 0
+def criar_inimigos(qtd, screen):
+    inimigos = []
+    if screen:
+        info = pygame.display.Info()
+        for _ in range(qtd):
+            random_x = random.randint(0, info.current_w - 50)
+            random_y = random.randint(0, info.current_h - 50)
+            inimigos.append(Inimigo(random_x, random_y))
+    return inimigos
 
-#almento de proporçao_player
-#acada ponto ganha 10% a mais em todos os atributos
-def almento_proporcao_player():
+def aumento_proporcao_player():
     global pontos
-    patamares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Patamares de pontos
+    patamares = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  # Patamares de pontos
     aumento = 0.1  # Aumento de 10%
     
     if pontos in patamares:
@@ -74,17 +74,14 @@ def almento_proporcao_player():
         player.renger += int(player.renger * aumento)
         player.intervalo_tiro -= int(player.intervalo_tiro * aumento)
 
-
-def almento_proporcao_inimigo():
+def aumento_proporcao_inimigo():
     global pontos_inimigo
-    patamares = [1, 2, 3, 4, 5]  # Patamares de pontos
+    patamares = [10, 20, 30, 40, 50]  # Patamares de pontos
     aumento = 0.1  # Aumento de 10%
 
     if pontos_inimigo in patamares:
         inimigo.hp += int(inimigo.hp * aumento)
         inimigo.velocidade += int(inimigo.velocidade * aumento)
-
-
 
 if __name__ == "__main__":
     screen, fps = janela()
@@ -92,13 +89,18 @@ if __name__ == "__main__":
     prioridade_janela()
     running = True
 
+    player = Player(50, 50)
+    inimigo = Inimigo(200, 200)  # Apenas para usar as propriedades do Inimigo (largura, altura)
+    pontos = 1
+    pontos_inimigo = 0
+    inimigo_lista = criar_inimigos(pontos, screen)  # Inicialmente cria 1 inimigo
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    #subprocess.Popen(["python", "Game/Game.py"])
                     sys.exit()
 
         player.mover(5, 5)  # Movimentação do jogador
@@ -111,30 +113,22 @@ if __name__ == "__main__":
         player.desenhar(screen)
         player.renge(screen)
         if player.atualizar_projetis(inimigo, screen):
-            # Randomizar posição do inimigo
-            random_x = random.randint(0, screen.get_width() - inimigo.largura)
-            random_y = random.randint(0, screen.get_height() - inimigo.altura)
-            inimigo = Inimigo(random_x, random_y)
             pontos += 1  # Incrementar pontos
-            almento_proporcao_player()
-            almento_proporcao_inimigo()
-
-            
+            aumento_proporcao_player()
+            aumento_proporcao_inimigo()
+            if inimigo_lista:
+                inimigo_lista.pop(0)  # Remove o inimigo derrotado da lista
 
         # Inimigo
-        inimigo.desenhar(screen)
-        inimigo.mover_player(player, inimigo.velocidade)  # Movimentação do inimigo
-        inimigo.limite_tela(screen.get_size())  # Limitar o movimento do inimigo
+        if len(inimigo_lista) == 0:
+            inimigo_lista = criar_inimigos(pontos, screen)
+            pontos_inimigo += pontos
+        for inimigo in inimigo_lista:
+            inimigo.mover_player(player, inimigo.velocidade)
+            inimigo.limite_tela(screen.get_size())
+            inimigo.desenhar(screen)
 
-        if inimigo.dano(player):
-            # Randomizar posição do inimigo
-            random_x = random.randint(0, screen.get_width() - inimigo.largura)
-            random_y = random.randint(0, screen.get_height() - inimigo.altura)
-            player = Player(random_x, random_y)
-            pontos = 0  # Reseta pontos do jogador
-            pontos_inimigo += 1  # Incrementa pontos do inimigo
-            almento_proporcao_inimigo()
-        
+        # Labels
         labeis = [
             Label(10, 10, f"Player HP: {player.hp}"),
             Label(10, 30, f"Inimigo HP: {inimigo.hp}"),
@@ -147,6 +141,7 @@ if __name__ == "__main__":
         ]
         for label in labeis:
             label.draw(screen)
+        
         pygame.display.flip()
         clock.tick(fps)  # Aplica o controle de FPS
 
