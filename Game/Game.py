@@ -8,6 +8,7 @@ import sys
 from tkinter import messagebox
 from Log.infor import Log
 from GUI.Botoes import Botoes
+from GUI.Foco_janela import FocoJanela
 
 
 # Verificação e execução do script de instalação, se necessário
@@ -59,7 +60,8 @@ def janela():
 # Função para garantir que a janela do jogo tenha prioridade
 def prioridade_janela():
     try:
-        os.system("wmctrl -r Game -b add,above")
+        focojanela = FocoJanela("Game")
+        focojanela.foco_janela()
     except Exception as e:
         Log(5).salvar()
 

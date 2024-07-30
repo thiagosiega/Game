@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+import subprocess
 
 from tkinter import messagebox
 from pywinauto import Application
@@ -42,4 +43,8 @@ class Botoes:
                 # Foca a janela do pygame
                 focojanela = FocoJanela("Game")
                 focojanela.foco_janela()
+        if texto == "Iniciar":
+            subprocess.Popen(["python", "Game/Lev1/Lev1.py"])
+            sys.exit()
+            
 

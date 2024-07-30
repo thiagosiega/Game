@@ -25,7 +25,7 @@ def instalar_dependencias():
             main()
 
 if __name__ == "__main__":
-    file = "Instalacao/Instalacao.txt"
+    file = "Instalacao/Instalaçao.txt"
     if not os.path.exists(file):
         instalar_dependencias()
     else:
