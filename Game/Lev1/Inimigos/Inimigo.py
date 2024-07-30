@@ -8,7 +8,7 @@ class Inimigo:
         self.hp = 50
         self.altura = 50
         self.largura = 50
-        self.velocidade = 1
+        self.velocidade = 5
         self.id = random.randint(1000, 9999)
 
     def limite_tela(self, resolucao):

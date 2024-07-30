@@ -34,7 +34,8 @@ def carregar_configuracoes():
     else:
         configuracoes = {
             "resolucao": [800, 600],
-            "fullscreen": False
+            "fullscreen": False,
+            "FPS": 60
         }
         os.makedirs(os.path.dirname(caminho_config), exist_ok=True)
         with open(caminho_config, "w") as file:
