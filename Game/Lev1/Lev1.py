@@ -54,6 +54,7 @@ def janela():
 
 def criar_inimigos(qtd, screen):
     inimigos = []
+    # se a lista estiver vazia, cria a qunatidade de inimigos deacordo com os pontos
     if screen:
         info = pygame.display.Info()
         for _ in range(qtd):
@@ -64,7 +65,7 @@ def criar_inimigos(qtd, screen):
 
 def aumento_proporcao_player():
     global pontos
-    patamares = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]  # Patamares de pontos
+    patamares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Patamares de pontos
     aumento = 0.1  # Aumento de 10%
     
     if pontos in patamares:
@@ -76,12 +77,13 @@ def aumento_proporcao_player():
 
 def aumento_proporcao_inimigo():
     global pontos_inimigo
-    patamares = [10, 20, 30, 40, 50]  # Patamares de pontos
+    patamares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Patamares de pontos
     aumento = 0.1  # Aumento de 10%
 
     if pontos_inimigo in patamares:
-        inimigo.hp += int(inimigo.hp * aumento)
-        inimigo.velocidade += int(inimigo.velocidade * aumento)
+        for inimigo in inimigo_lista:
+            inimigo.hp += int(inimigo.hp * aumento)
+            inimigo.velocidade += int(inimigo.velocidade * aumento)
 
 if __name__ == "__main__":
     screen, fps = janela()
@@ -90,7 +92,6 @@ if __name__ == "__main__":
     running = True
 
     player = Player(50, 50)
-    inimigo = Inimigo(200, 200)  # Apenas para usar as propriedades do Inimigo (largura, altura)
     pontos = 1
     pontos_inimigo = 0
     inimigo_lista = criar_inimigos(pontos, screen)  # Inicialmente cria 1 inimigo
@@ -106,18 +107,29 @@ if __name__ == "__main__":
         player.mover(5, 5)  # Movimentação do jogador
         player.limite_tela(screen.get_size())  # Limitar o movimento do jogador
 
-        player.tiro(inimigo, screen)  # Verifica e cria projéteis
+        player.tiro(inimigo_lista, screen)  # Verifica e cria projéteis
         screen.fill((0, 0, 0))
         
         # Player
         player.desenhar(screen)
         player.renge(screen)
-        if player.atualizar_projetis(inimigo, screen):
+        if player.atualizar_projetis(inimigo_lista, screen):
             pontos += 1  # Incrementar pontos
+            pontos_inimigo += 1  # Incrementar pontos do inimigo
             aumento_proporcao_player()
             aumento_proporcao_inimigo()
-            if inimigo_lista:
-                inimigo_lista.pop(0)  # Remove o inimigo derrotado da lista
+            #se a lista de inimigos estiver vazia, cria a quantidade de inimigos de acordo com os pontos
+            if len(inimigo_lista) == 0:
+                inimigo_lista = criar_inimigos(pontos, screen)
+                pontos_inimigo += pontos
+
+            
+            # Remover o inimigo derrotado
+            inimigos_para_remover = [inimigo for inimigo in inimigo_lista if inimigo.hp <= 0]
+            try:
+                inimigo_lista.remove(inimigos_para_remover[0])
+            except IndexError:
+                pass
 
         # Inimigo
         if len(inimigo_lista) == 0:
@@ -127,17 +139,24 @@ if __name__ == "__main__":
             inimigo.mover_player(player, inimigo.velocidade)
             inimigo.limite_tela(screen.get_size())
             inimigo.desenhar(screen)
+            inimigo.colidir_player(player)
+            #colidir com inimigos
+            for inimigo2 in inimigo_lista:
+                if inimigo != inimigo2:
+                    inimigo.colidir_inimigo(inimigo2)
 
         # Labels
         labeis = [
             Label(10, 10, f"Player HP: {player.hp}"),
-            Label(10, 30, f"Inimigo HP: {inimigo.hp}"),
+            Label(10, 30, f"Inimigo HP: {', '.join(str(inimigo.hp) for inimigo in inimigo_lista)}"),
             Label(10, 50, f"Pontos: {pontos}"),
             Label(10, 70, f"Player Atk: {player.atk}"),
             Label(10, 90, f"Player Defense: {player.defense}"),
             Label(10, 110, f"Player Renger: {player.renger}"),
             Label(10, 130, f"Player Intervalo Tiro: {player.intervalo_tiro}"),
-            Label(10, 150, f"Inimigo Velocidade: {inimigo.velocidade}")
+            Label(10, 150, f"Inimigo Velocidade: {', '.join(str(inimigo.velocidade) for inimigo in inimigo_lista)}"),
+            Label(10, 170, f"Tiros: {len(player.projetis)}"),
+            Label(10, 190, f"Tiros player: {player.tiros}"),
         ]
         for label in labeis:
             label.draw(screen)

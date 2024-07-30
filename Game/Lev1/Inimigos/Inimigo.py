@@ -1,4 +1,5 @@
 import pygame
+import random
 
 class Inimigo:
     def __init__(self, x, y):
@@ -8,6 +9,7 @@ class Inimigo:
         self.altura = 50
         self.largura = 50
         self.velocidade = 1
+        self.id = random.randint(1000, 9999)
 
     def limite_tela(self, resolucao):
         if self.x < 0:
@@ -59,3 +61,18 @@ class Inimigo:
                     player.y -= overlap_y
             return True
         return False
+    def colidir_inimigo(self, inimigo):
+        if self.x < inimigo.x + inimigo.largura and self.x + self.largura > inimigo.x and self.y < inimigo.y + inimigo.altura and self.y + self.altura > inimigo.y:
+            # Calcular a sobreposição
+            overlap_x = min(self.x + self.largura - inimigo.x, inimigo.x + inimigo.largura - self.x)
+            overlap_y = min(self.y + self.altura - inimigo.y, inimigo.y + inimigo.altura - self.y)
+
+            # Empurrar o inimigo fora do inimigo
+            if overlap_x < overlap_y:
+                if self.x < inimigo.x:
+                    inimigo.x += overlap_x
+                else:
+                    inimigo.x -= overlap_x
+            else:
+                if self.y < inimigo.y:
+                    inimigo.y += overlap_y
