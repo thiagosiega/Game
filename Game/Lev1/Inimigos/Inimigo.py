@@ -7,6 +7,7 @@ class Inimigo:
         self.hp = 50
         self.altura = 50
         self.largura = 50
+        self.velocidade = 1
 
     def limite_tela(self, resolucao):
         if self.x < 0:
@@ -22,7 +23,6 @@ class Inimigo:
         # Se o player colidir com o inimigo, o player perde 10 de hp
         if self.colidir_player(player):
             player.hp -= 1
-            print(f"Player HP: {player.hp}")
             if player.hp <= 0:
                 return True
         return False
@@ -30,15 +30,15 @@ class Inimigo:
     def desenhar(self, screen):
         pygame.draw.rect(screen, (255, 0, 0), (self.x, self.y, self.largura, self.altura))
 
-    def mover_player(self, player):
+    def mover_player(self, player, velocidade):
         if self.x < player.x:
-            self.x += 1
+            self.x += velocidade
         if self.x > player.x:
-            self.x -= 1
+            self.x -= velocidade
         if self.y < player.y:
-            self.y += 1
+            self.y += velocidade
         if self.y > player.y:
-            self.y -= 1
+            self.y -= velocidade
 
     def colidir_player(self, player):
         if self.x < player.x + player.largura and self.x + self.largura > player.x and self.y < player.y + player.altura and self.y + self.altura > player.y:

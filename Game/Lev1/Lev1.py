@@ -3,6 +3,7 @@ import os
 import json
 import sys
 import subprocess
+import random
 
 
 from tkinter import messagebox
@@ -14,6 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Player.Player import Player
 from Inimigos.Inimigo import Inimigo
 from GUI.Foco_janela import FocoJanela
+from GUI.Label import Label
 
 pygame.init()
 
@@ -55,6 +57,34 @@ def janela():
 
 player = Player(50, 50)
 inimigo = Inimigo(200, 200)
+pontos = 0
+pontos_inimigo = 0
+
+#almento de proporçao_player
+#acada ponto ganha 10% a mais em todos os atributos
+def almento_proporcao_player():
+    global pontos
+    patamares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # Patamares de pontos
+    aumento = 0.1  # Aumento de 10%
+    
+    if pontos in patamares:
+        player.hp += int(player.hp * aumento)
+        player.atk += int(player.atk * aumento)
+        player.defense += int(player.defense * aumento)
+        player.renger += int(player.renger * aumento)
+        player.intervalo_tiro -= int(player.intervalo_tiro * aumento)
+
+
+def almento_proporcao_inimigo():
+    global pontos_inimigo
+    patamares = [1, 2, 3, 4, 5]  # Patamares de pontos
+    aumento = 0.1  # Aumento de 10%
+
+    if pontos_inimigo in patamares:
+        inimigo.hp += int(inimigo.hp * aumento)
+        inimigo.velocidade += int(inimigo.velocidade * aumento)
+
+
 
 if __name__ == "__main__":
     screen, fps = janela()
@@ -68,7 +98,7 @@ if __name__ == "__main__":
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    subprocess.Popen(["python", "Game/Game.py"])
+                    #subprocess.Popen(["python", "Game/Game.py"])
                     sys.exit()
 
         player.mover(5, 5)  # Movimentação do jogador
@@ -81,22 +111,42 @@ if __name__ == "__main__":
         player.desenhar(screen)
         player.renge(screen)
         if player.atualizar_projetis(inimigo, screen):
-            # Se o inimigo é derrotado
-            messagebox.showinfo("Vitória", "O player venceu!")
-            subprocess.Popen(["python", "Game/Game.py"])
-            sys.exit()
+            # Randomizar posição do inimigo
+            random_x = random.randint(0, screen.get_width() - inimigo.largura)
+            random_y = random.randint(0, screen.get_height() - inimigo.altura)
+            inimigo = Inimigo(random_x, random_y)
+            pontos += 1  # Incrementar pontos
+            almento_proporcao_player()
+            almento_proporcao_inimigo()
+
+            
 
         # Inimigo
         inimigo.desenhar(screen)
-        inimigo.mover_player(player)
+        inimigo.mover_player(player, inimigo.velocidade)  # Movimentação do inimigo
         inimigo.limite_tela(screen.get_size())  # Limitar o movimento do inimigo
 
         if inimigo.dano(player):
-            # Se o player é derrotado
-            messagebox.showinfo("Game Over", "O inimigo venceu!")
-            subprocess.Popen(["python", "Game/Game.py"])
-            sys.exit()
-
+            # Randomizar posição do inimigo
+            random_x = random.randint(0, screen.get_width() - inimigo.largura)
+            random_y = random.randint(0, screen.get_height() - inimigo.altura)
+            player = Player(random_x, random_y)
+            pontos = 0  # Reseta pontos do jogador
+            pontos_inimigo += 1  # Incrementa pontos do inimigo
+            almento_proporcao_inimigo()
+        
+        labeis = [
+            Label(10, 10, f"Player HP: {player.hp}"),
+            Label(10, 30, f"Inimigo HP: {inimigo.hp}"),
+            Label(10, 50, f"Pontos: {pontos}"),
+            Label(10, 70, f"Player Atk: {player.atk}"),
+            Label(10, 90, f"Player Defense: {player.defense}"),
+            Label(10, 110, f"Player Renger: {player.renger}"),
+            Label(10, 130, f"Player Intervalo Tiro: {player.intervalo_tiro}"),
+            Label(10, 150, f"Inimigo Velocidade: {inimigo.velocidade}")
+        ]
+        for label in labeis:
+            label.draw(screen)
         pygame.display.flip()
         clock.tick(fps)  # Aplica o controle de FPS
 
