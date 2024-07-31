@@ -1,4 +1,3 @@
-import datetime
 import os
 import subprocess
 import sys
@@ -31,7 +30,6 @@ class Instalar:
             
             # Criar o arquivo de instalação com mais informações
             with open("Instalacao/instalar.txt", "w") as file:
-                file.write(f"Data da instalação: {datetime.now()}\n")
                 file.write(f"Requisitos instalados: {', '.join(requisitos_instalados)}\n")
 
         return requisitos_instalados, erros

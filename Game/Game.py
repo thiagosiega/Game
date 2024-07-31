@@ -14,7 +14,7 @@ from GUI.Img import Imgs
 # Verificação e execução do script de instalação, se necessário
 def verificar_instalacao():
     try:
-        file = "Instalacao/Instalaçao.txt"
+        file = "Instalacao/instalar.txt"
         if not os.path.exists(file):
             messagebox.showinfo("Instalação", "Algo deu errado!\nEstamos resolvendo!")
             # Informar erro e reiniciar o script
