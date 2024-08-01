@@ -23,7 +23,10 @@ def instalar_dependencias():
 
 if __name__ == "__main__":
     file = "Instalacao/instalar.txt"
+    messagebox.showinfo("Instalação", "Verificando dependências!")
     if not os.path.exists(file):
         instalar_dependencias()
+        messagebox.showinfo("Instalação", "Instalação concluída com sucesso!")
     else:
+        messagebox.showinfo("Instalação", "Dependências já instaladas!")
         main()
