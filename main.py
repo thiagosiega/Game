@@ -7,6 +7,7 @@ from Instalacao.Instalar import Instalar
 from Game.Log.infor import Log  
 
 def main():
+    messagebox.showinfo("Jogo", "Iniciando o jogo!")
     subprocess.call(["python", "Game/Game.py"])
 
 def instalar_dependencias():
