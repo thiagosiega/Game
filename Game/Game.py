@@ -13,7 +13,6 @@ from GUI.Img import Imgs
 
 # Verificação e execução do script de instalação, se necessário
 def verificar_instalacao():
-    messagebox.showinfo("Instalação", "Verificando dependências!")
     try:
         file = "Instalacao/instalar.txt"
         if not os.path.exists(file):
@@ -28,7 +27,6 @@ def verificar_instalacao():
 
 # Função para carregar as configurações do jogo
 def carregar_configuracoes():
-    messagebox.showinfo("Configurações", "Carregando configurações!")
     caminho_config = os.path.join(os.path.dirname(__file__), "Game/Config/Config.json")
     if os.path.exists(caminho_config):
         with open(caminho_config, "r") as file:
@@ -46,7 +44,6 @@ def carregar_configuracoes():
 
 # Função para definir a janela do jogo
 def criar_janela():
-    messagebox.showinfo("Janela", "Criando janela!")
     pygame.init()
     configuracoes = carregar_configuracoes()
     fullscreen = configuracoes["fullscreen"]
@@ -71,7 +68,6 @@ def garantir_prioridade_janela():
         Log(5).salvar()
 
 def main():
-    messagebox.showinfo("Jogo", "Iniciando o jogo!")
     verificar_instalacao()
     screen = criar_janela()
     garantir_prioridade_janela()
@@ -110,7 +106,6 @@ def main():
     pygame.quit()
 
 if __name__ == "__main__":
-    messagebox.showinfo("Jogo", "Iniciando o jogo!")
     try:
         main()
     except Exception as e:
