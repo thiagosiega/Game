@@ -1,10 +1,10 @@
 import os
 import shutil
 
-def desistalar():
+def desinstalar():
     # Diretórios a serem removidos
     programa = "main.py"
-    files = ["Game", "Instalacao",".vscode"]
+    files = ["Game", "Instalacao", ".vscode"]
     
     # Bibliotecas a serem desinstaladas
     bibliotecas = ["pygame", "pywinauto"]
@@ -32,4 +32,4 @@ def desistalar():
     print("Desinstalação concluída com sucesso!")
 
 if __name__ == "__main__":
-    desistalar()
+    desinstalar()
