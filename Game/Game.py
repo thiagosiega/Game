@@ -29,7 +29,7 @@ def verificar_instalacao():
 # Função para carregar as configurações do jogo
 def carregar_configuracoes():
     messagebox.showinfo("Configurações", "Carregando configurações!")
-    caminho_config = "Game/Config/Config.json"
+    caminho_config = os.path.join(os.path.dirname(__file__), "Game/Config/Config.json")
     if os.path.exists(caminho_config):
         with open(caminho_config, "r") as file:
             configuracoes = json.load(file)
@@ -111,4 +111,9 @@ def main():
 
 if __name__ == "__main__":
     messagebox.showinfo("Jogo", "Iniciando o jogo!")
-    main()
+    try:
+        main()
+    except Exception as e:
+        with open("error_log.txt", "w") as log_file:
+            log_file.write(f"Erro: {str(e)}\n")
+        sys.exit(1)
