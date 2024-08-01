@@ -4,7 +4,7 @@ import shutil
 def desistalar():
     # Diretórios a serem removidos
     programa = "main.py"
-    files = ["Game", "Instalacao"]
+    files = ["Game", "Instalacao",".vscode"]
     
     # Bibliotecas a serem desinstaladas
     bibliotecas = ["pygame", "pywinauto"]
