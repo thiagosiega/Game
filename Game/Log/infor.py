@@ -23,7 +23,6 @@ def pesquisa_erro(id):
 
 def salvar_erro(erro):
     erro_info = pesquisa_erro(erro)
-    print(erro_info)
     erro_descricao = erro_info.get('Descrição', 'Descrição não disponível')
     erro_mensagem = erro_info.get('Erro', 'Erro desconhecido')
     

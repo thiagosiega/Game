@@ -27,7 +27,7 @@ def verificar_instalacao():
 
 # Função para carregar as configurações do jogo
 def carregar_configuracoes():
-    caminho_config = os.path.join(os.path.dirname(__file__), "Game/Config/Config.json")
+    caminho_config = os.path.join(os.path.dirname(__file__), "Config/Config.json")
     if os.path.exists(caminho_config):
         with open(caminho_config, "r") as file:
             configuracoes = json.load(file)

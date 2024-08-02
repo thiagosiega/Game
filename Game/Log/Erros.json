@@ -10,28 +10,28 @@
         {
             "ID": 2,
             "Infor": {
-                "Erro": "Erro de instalação.",
+                "Erro": "Erro de Instalação.",
                 "Descrição": "Pacote ou componente corrompido ou não encontrado."
             }
         },
         {
             "ID": 3,
             "Infor": {
-                "Erro": "Erro de desinstalação.",
+                "Erro": "Erro de Desinstalação.",
                 "Descrição": "Pacote ou componente não encontrado ou inexistente."
             }
         },
         {
             "ID": 4,
             "Infor": {
-                "Erro": "Erro de iniciação indevida.",
+                "Erro": "Erro de Chamada.",
                 "Descrição": "Provavelmente um arquivo foi chamado na ordem errada. Inicie o arquivo 'main.py' para corrigir."
             }
         },
         {
             "ID": 5,
             "Infor": {
-                "Erro": "Erro ao definir a prioridade da janela.",
+                "Erro": "Erro de Prioridade.",
                 "Descrição": "O erro quer dizer que a janela não foi puxada para frente como esperado. Contate o DEV para mais informações. Isso não impede a execução."
             }
         },
@@ -40,6 +40,48 @@
             "Infor": {
                 "Erro": "Erro ao Identificar janela.",
                 "Descrição": "Esse erro ocorre quando tem multiplos monitores/sem monitores e a janela não foi identificada corretamente. Contate o DEV para mais informações."
+            }
+        },
+        {
+            "ID": 7,
+            "Infor": {
+                "Erro": "Erro ao carregar arquivo.",
+                "Descrição": "O arquivo não foi encontrado ou não pode ser carregado. Verifique se o arquivo existe e se o caminho está correto."
+            }
+        },
+        {
+            "ID": 8,
+            "Infor": {
+                "Erro": "Erro ao salvar arquivo.",
+                "Descrição": "O arquivo não pode ser salvo. Verifique se o arquivo não está aberto em outro programa e se o caminho está correto."
+            }
+        },
+        {
+            "ID": 9,
+            "Infor": {
+                "Erro": "Erro ao carregar arquivo de saves.",
+                "Descrição": "O arquivo de saves não foi encontrado ou não pode ser carregado. Verifique se o arquivo existe e se o caminho está correto."
+            }
+        },
+        {
+            "ID": 10,
+            "Infor": {
+                "Erro": "Erro ao salvar arquivo de saves.",
+                "Descrição": "O arquivo de saves não pode ser salvo. Verifique se o arquivo não está aberto em outro programa e se o caminho está correto."
+            }
+        },
+        {
+            "ID": 11,
+            "Infor": {
+                "Erro": "Erro De Capitulo.",
+                "Descrição": "Isso o corre quando o capitulo não é encontrado ou não existe. Verifique se o capitulo existe e se o caminho está correto ou o valor esta dentro dos parametros."
+            }
+        },
+        {
+            "ID": 12,
+            "Infor": {
+                "Erro": "Erro ao salvar arquivo de log.",
+                "Descrição": "O arquivo de log não pode ser salvo. Verifique se o arquivo não está aberto em outro programa e se o caminho está correto."
             }
         }
     ]

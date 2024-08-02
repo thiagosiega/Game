@@ -45,11 +45,14 @@ class Botoes:
             while True:
                 try:
                     # Inicia o jogo e aguarda a conclusão
-                    subprocess.run(["python", "Game/Lev1/Lev1.py"], check=True)
+                    subprocess.run(["python", "Game/Inicio/Entrada.py"], check=True)
                     break
                 except Exception as e:
                     print(f"Erro ao iniciar o jogo: {e}")
                     messagebox.showerror("Erro", f"Erro ao iniciar o jogo: {e}")
+        
+        elif texto == "Pecados":
+            subprocess.run(["python", "Game/Pecados/Pecados.py"])
         
         elif texto == "Configurações":
             # Placeholder para configurações
