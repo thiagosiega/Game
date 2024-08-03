@@ -3,6 +3,7 @@ import sys
 import json
 import subprocess
 import tkinter as tk
+
 from tkinter import messagebox
 
 # Adiciona o diretório "Game" ao sys.path
@@ -29,6 +30,8 @@ def listar_arquivos():
         janela.geometry("400x200")
         janela.resizable(False, False)
 
+        #da janela para frente
+        janela.attributes("-topmost", True)
         def salvar():
             dados_padrao = {
                 "Nome": entradas[0].get(),
@@ -36,7 +39,7 @@ def listar_arquivos():
                 "Mana": 100,
                 "Items": [],
                 "Cap": 1,
-                "Tex_vez": "A1 -:",
+                "Tex_vez": "1",
             }
             Saives({}).salvar(dados_padrao)
             janela.destroy()
@@ -74,18 +77,60 @@ def listar_arquivos():
                     if arquivo != "Continuar.json":
                         nome = arquivo.split(".")[0]
                         def carregar_save(arquivo=arquivo):
-                            with open(FILE_SAVES + arquivo, "r") as file:
-                                dados = json.load(file)
-                                cap = dados["Cap"]
-                                nome = dados["Nome"]
-                                file_path = f"Game/Caps/Cap_{cap}/main.py"
-                                if os.path.exists(file_path):
-                                    try:
-                                        subprocess.run(["python", file_path, nome])
-                                    except Exception as e:
-                                        Log(12, str(e)).salvar()
-                                else:
-                                    Log(12, f"Arquivo não encontrado: {file_path}").salvar()
+                            if arquivo != "Novo_jogo.json":
+                                with open(FILE_SAVES + arquivo, "r") as file:
+                                    dados = json.load(file)
+                                    cap = dados["Cap"]
+                                    nome = dados["Nome"]
+                                    file_path = f"Game/Caps/Cap_{cap}/main.py"
+                                    if os.path.exists(file_path):
+                                        try:
+                                            subprocess.run(["python", file_path, nome])
+                                            janela.destroy()
+                                        except Exception as e:
+                                            Log(12, str(e)).salvar()
+                                    else:
+                                        Log(12, f"Arquivo não encontrado: {file_path}").salvar()
+                            else:
+                                janela = tk.Tk()
+                                janela.title("Novo Jogo")
+                                janela.geometry("400x200")
+                                janela.resizable(False, False)
+
+                                #da janela para frente
+                                janela.attributes("-topmost", True)
+                                def salvar():
+                                    dados_padrao = {
+                                        "Nome": entradas[0].get(),
+                                        "Vida": 100,
+                                        "Mana": 100,
+                                        "Items": [],
+                                        "Cap": 1,
+                                        "Tex_vez": "1",
+                                    }
+                                    Saives({}).salvar(dados_padrao)
+                                    janela.destroy()
+                                    cap = dados_padrao["Cap"]
+                                    nome = dados_padrao["Nome"]
+                                    file_path = f"Game/Caps/Cap_{cap}/main.py"
+                                    if os.path.exists(file_path):
+                                        try:
+                                            subprocess.run(["python", file_path, nome])
+                                        except Exception as e:
+                                            Log(12, str(e)).salvar()  # Passar a mensagem de erro
+                                    else:
+                                        Log(12, f"Arquivo não encontrado: {file_path}").salvar()  # Mensagem específica para o arquivo não encontrado
+
+                                labeis = ["Nome"]
+                                entradas = []
+                                for i in range(len(labeis)):
+                                    tk.Label(janela, text=labeis[i]).grid(row=i, column=0)
+                                    entradas.append(tk.Entry(janela))
+                                    entradas[i].grid(row=i, column=1)
+                                
+                                tk.Button(janela, text="Salvar", command=salvar).grid(row=len(labeis), column=0, columnspan=2)
+                                janela.mainloop()
+                                
                         btn = tk.Button(janela, text=nome, command=lambda a=arquivo: carregar_save(a))
                         btns.append(btn)
                 return btns

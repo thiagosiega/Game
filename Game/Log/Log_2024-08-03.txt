@@ -1,18 +1,18 @@
 
 ------------------------------------------------------------------------------------------------------------------------
-Erro: Erro de Chamada.
-Descrição: Provavelmente um arquivo foi chamado na ordem errada. Inicie o arquivo 'main.py' para corrigir.
-Data: 2024-08-02 12:09:40
+Erro: Erro de Desinstalação.
+Descrição: Pacote ou componente não encontrado ou inexistente.
+Data: 2024-08-03 01:47:18
 ------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------------------
-Erro: Erro ao salvar arquivo de log.
-Descrição: O arquivo de log não pode ser salvo. Verifique se o arquivo não está aberto em outro programa e se o caminho está correto.
-Data: 2024-08-02 12:16:41
+Erro: Erro de Desinstalação.
+Descrição: Pacote ou componente não encontrado ou inexistente.
+Data: 2024-08-03 01:48:56
 ------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------------------
-Erro: Erro ao salvar arquivo de log.
-Descrição: O arquivo de log não pode ser salvo. Verifique se o arquivo não está aberto em outro programa e se o caminho está correto.
-Data: 2024-08-02 12:17:24
+Erro: Erro de Desinstalação.
+Descrição: Pacote ou componente não encontrado ou inexistente.
+Data: 2024-08-03 01:49:14
 ------------------------------------------------------------------------------------------------------------------------
