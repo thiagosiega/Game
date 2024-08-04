@@ -48,6 +48,7 @@ def listar_arquivos():
             file_path = f"Game/Caps/Cap_{cap}/main.py"
             if os.path.exists(file_path):
                 try:
+                    janela.destroy()
                     subprocess.run(["python", file_path, nome])
                 except Exception as e:
                     Log(12, str(e)).salvar()  # Passar a mensagem de erro
@@ -84,11 +85,7 @@ def listar_arquivos():
                                     nome = dados["Nome"]
                                     file_path = f"Game/Caps/Cap_{cap}/main.py"
                                     if os.path.exists(file_path):
-                                        try:
-                                            subprocess.run(["python", file_path, nome])
-                                            janela.destroy()
-                                        except Exception as e:
-                                            Log(12, str(e)).salvar()
+                                        subprocess.run(["python", file_path, nome])
                                     else:
                                         Log(12, f"Arquivo não encontrado: {file_path}").salvar()
                             else:
@@ -114,10 +111,8 @@ def listar_arquivos():
                                     nome = dados_padrao["Nome"]
                                     file_path = f"Game/Caps/Cap_{cap}/main.py"
                                     if os.path.exists(file_path):
-                                        try:
-                                            subprocess.run(["python", file_path, nome])
-                                        except Exception as e:
-                                            Log(12, str(e)).salvar()  # Passar a mensagem de erro
+                                       janela.destroy()
+                                       subprocess.run(["python", file_path, nome])
                                     else:
                                         Log(12, f"Arquivo não encontrado: {file_path}").salvar()  # Mensagem específica para o arquivo não encontrado
 
