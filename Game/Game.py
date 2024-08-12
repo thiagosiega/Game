@@ -1,114 +1,127 @@
 import pygame
 import os
 import json
-import subprocess
-import sys
 
-
-from tkinter import messagebox
-from Log.infor import Log
+from GUI.janela import Janela
 from GUI.Botoes import Botoes
-from GUI.Foco_janela import FocoJanela
-from GUI.Img import Imgs
+from Configurações.main import Configuracoes
+from Inicio.main import Inicio
+from Pecados.main import Pecados
 
-# Verificação e execução do script de instalação, se necessário
-def verificar_instalacao():
-    try:
-        file = "Instalacao/instalar.txt"
-        if not os.path.exists(file):
-            messagebox.showinfo("Instalação", "Algo deu errado!\nEstamos resolvendo!")
-            # Informar erro e reiniciar o script
-            Log(4).salvar()
-            subprocess.Popen(["python", "main.py"])
-            sys.exit()
-    except Exception as e:
-        print(f"Erro ao verificar ou executar o script de instalação: {e}")
-        sys.exit()
+pygame.init()
+pygame.font.init()
 
-# Função para carregar as configurações do jogo
-def carregar_configuracoes():
-    caminho_config = os.path.join(os.path.dirname(__file__), "Config/Config.json")
-    if os.path.exists(caminho_config):
-        with open(caminho_config, "r") as file:
-            configuracoes = json.load(file)
+# Carregar as configurações do jogo
+FILE_CONFIG = "Game/Saive/Config.json"
+Dados_base = {
+    "Tela": "800x600",
+    "Nivel": "Facil",
+    "FPS": "30"
+}
+
+if os.path.exists(FILE_CONFIG):
+    with open(FILE_CONFIG, "r") as file:
+        Dados_base.update(json.load(file))
+else:
+    with open(FILE_CONFIG, "w") as file:
+        json.dump(Dados_base, file)
+
+if isinstance(Dados_base["Tela"], list):
+    tamanho = tuple(Dados_base["Tela"])
+elif Dados_base["Tela"] == "Full Screen":
+    tamanho = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+else:
+    tamanho = tuple(map(int, Dados_base["Tela"].split('x')))
+
+# Cria a janela
+janela = Janela(tamanho, "Game")
+
+#imagem do fundo
+fundo = pygame.image.load("Game/Fundo.jpg")
+fundo = pygame.transform.scale(fundo, tamanho)
+
+# Definindo estados do jogo
+estado_atual = "Menu"
+tex_btn = ["Inicio", "Configurações", "Pecados", "Sair"]
+
+def comand(text):
+    global estado_atual
+    if text == "Sair":
+        estado_atual = "Sair"
     else:
-        configuracoes = {
-            "resolucao": [800, 600],
-            "fullscreen": False,
-            "FPS": 60
-        }
-        os.makedirs(os.path.dirname(caminho_config), exist_ok=True)
-        with open(caminho_config, "w") as file:
-            json.dump(configuracoes, file)
-    return configuracoes
+        estado_atual = text
 
-# Função para definir a janela do jogo
-def criar_janela():
-    pygame.init()
-    configuracoes = carregar_configuracoes()
-    fullscreen = configuracoes["fullscreen"]
+# Função auxiliar para criar o comando com o texto correto
+def criar_comando(text):
+    return lambda: comand(text)
 
-    if fullscreen:
-        info = pygame.display.Info()
-        resolucao = (info.current_w, info.current_h)
-        tela = pygame.display.set_mode(resolucao, pygame.FULLSCREEN)
-    else:
-        resolucao = configuracoes["resolucao"]
-        tela = pygame.display.set_mode(resolucao)
+def desenhar_menu():
+    surface = janela.get_surface()
+    largura, altura = surface.get_size()
     
-    pygame.display.set_caption("Game")
-    return tela
+    # Definindo as propriedades dos botões
+    largura_botao = 200
+    altura_botao = 50
+    espaco_entre_botoes = 20
+    pos_x = (largura - largura_botao) // 10
+    pos_y = (altura - (altura_botao * len(tex_btn) + espaco_entre_botoes * (len(tex_btn) - 1))) // 10
+    
+    for i, texto in enumerate(tex_btn):
+        botao = Botoes(
+            surface,
+            texto,
+            pos_x,
+            pos_y + (altura_botao + espaco_entre_botoes) * i,
+            largura_botao,
+            altura_botao,
+            (0, 0, 255),
+            (0, 0, 128),
+            criar_comando(texto)
+        )
+        botao.desenhar()
+        botao.executar()
 
-# Função para garantir que a janela do jogo tenha prioridade
-def garantir_prioridade_janela():
-    try:
-        focojanela = FocoJanela("Game")
-        focojanela.foco_janela()
-    except Exception as e:
-        Log(5).salvar()
-
-def main():
-    verificar_instalacao()
-    screen = criar_janela()
-    garantir_prioridade_janela()
-
-    texto = ["Iniciar", "Configurações", "Pecados", "Sair"]
-    img = "Game/Img/Fundo_Game1.jpg"
-    fundo_img = Imgs(img, screen.get_width(), screen.get_height(), 0, 0)
-
-    # Criação dos botões fora do loop para evitar recriação desnecessária
-    botoes = [Botoes(100, 100 + i * 50, 200, 40, (255, 0, 0), t) for i, t in enumerate(texto)]
-
-    running = True
-    while running:
+try:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                for botao in botoes:
-                    if botao.rect.collidepoint(pos):
-                        botao.acao(botao.texto)
+                janela.fechar()
+                pygame.quit()
+                exit()
 
-        # Limpar a tela e desenhar a imagem de fundo
-        screen.fill((0, 0, 0))  # Preencher com preto antes de desenhar o fundo
-        fundo_img.desenhar_imagem(screen)
+        if estado_atual == "Menu":
+            janela.get_surface().blit(fundo, (0, 0))
+            desenhar_menu()
 
-        # Desenhar botões
-        for botao in botoes:
-            botao.desenhar(screen)
+        elif estado_atual == "Configurações":
+            config = Configuracoes(janela.get_surface())
+            config.executar()
+            estado_atual = "Menu"
         
-        pygame.display.flip()
+        elif estado_atual == "Inicio":
+            menu_inicio = Inicio(janela)
+            menu_inicio.executar()
+            estado_atual = "Menu"
 
+        elif estado_atual == "Sair":
+            janela.fechar()
+            pygame.quit()
+            exit()
+
+        elif estado_atual == "Pecados":
+            pecados = Pecados(janela.get_surface())
+            pecados.executar()
+            estado_atual = "Menu"
+        else:
+            print("Estado inválido")
+            estado_atual = "Menu"
+
+       
+        # Atualiza a tela
+        pygame.display.update()
+
+except Exception as e:
+    print(e)
+    janela.fechar()
     pygame.quit()
-
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        with open("error_log.txt", "w") as log_file:
-            log_file.write(f"Erro: {str(e)}\n")
-        sys.exit(1)
+    exit()
